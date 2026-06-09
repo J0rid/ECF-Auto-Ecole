@@ -1,0 +1,74 @@
+title Prise d'une leçon de conduite - AEL
+
+actor Eleve
+actor Secrétaire
+participant leconVue.html
+participant leconCtrl.js
+participant leconMetier.cs
+participant moniteurMetier.cs
+participant vehiculeMetier.cs
+participant leconRepo.cs
+participant moniteurRepo.cs
+participant vehiculeRepo.cs
+database BDD
+
+Eleve -> Secrétaire: Demande un créneau
+
+Secrétaire->leconVue.html: Ouvrir la page de leçons
+leconVue.html->leconCtrl.js: getCreneauxDispo(date)
+leconCtrl.js->leconMetier.cs: fetchCreneaux(date)
+leconMetier.cs->leconRepo.cs: findCreneauxByDate(date)
+leconRepo.cs->BDD: SELECT * FROM CALENDRIER WHERE DateHeure  = @date
+BDD-->leconRepo.cs: return creneauxList
+leconRepo.cs-->leconMetier.cs: return creneauxList
+leconMetier.cs-->leconCtrl.js: return creneauxList
+leconCtrl.js-->leconVue.html: afficherCreneaux(creneauxList)
+
+Secrétaire->leconVue.html: Selectionne un créneau
+leconVue.html->leconCtrl.js: checkDispo(dateHeure)
+leconCtrl.js->leconMetier.cs: verifDispo(dateHeure)
+
+leconMetier.cs->moniteurMetier.cs: getMoniteursActifs()
+moniteurMetier.cs->moniteurRepo.cs: findMoniteursActifs()
+moniteurRepo.cs->BDD: SELECT * FROM MONITEUR WHERE activite = 1
+BDD-->moniteurRepo.cs: return moniteurList
+moniteurRepo.cs-->moniteurMetier.cs: return moniteurList
+moniteurMetier.cs-->leconMetier.cs: return moniteurList
+
+leconMetier.cs->vehiculeMetier.cs: getVehiculesDispo()
+vehiculeMetier.cs->vehiculeRepo.cs: findVehiculesDispo()
+vehiculeRepo.cs->BDD: SELECT * FROM VEHICULE WHERE etat = 1
+BDD-->vehiculeRepo.cs: return vehiculeList
+vehiculeRepo.cs-->vehiculeMetier.cs: return vehiculeList
+vehiculeMetier.cs-->leconMetier.cs: return vehiculeList
+
+leconMetier.cs-->leconCtrl.js: return dispo(moniteurList, vehiculeList)
+leconCtrl.js-->leconVue.html: afficherDispo(moniteurList, vehiculeList)
+
+Secrétaire->leconVue.html: Saisi des infos (idEleve, idMoniteur, modeleVehicule, duree)
+
+loop [Champs invalides]
+leconVue.html->leconVue.html: validerFormulaire()
+end
+
+leconVue.html->leconCtrl.js: submitLecon(idEleve, idMoniteur, modeleVehicule, dateHeure, duree)
+leconCtrl.js->leconMetier.cs: createLecon(idEleve, idMoniteur, modeleVehicule, dateHeure, duree)
+
+alt [Moniteur indisponible]
+leconMetier.cs-->leconCtrl.js: return moniteurError
+leconCtrl.js-->leconVue.html: afficheErreur("Moniteur indisponible")
+leconVue.html-->Secrétaire: afficherMessageErreur()
+else [Véhicule indisponible]
+leconMetier.cs-->leconCtrl.js: return vehiculeError
+leconCtrl.js-->leconVue.html: afficheErreur("Véhicule indisponible")
+leconVue.html-->Secrétaire: afficherMessageErreur()
+else [Données valides]
+leconMetier.cs->leconRepo.cs: saveLecon(idEleve, idMoniteur, modeleVehicule, dateHeure, duree)
+leconRepo.cs->BDD: INSERT INTO LECON (ModeleLecon, DateHLecon, EleveId, MoniteurId , Duree)
+BDD-->leconRepo.cs: return success
+leconRepo.cs-->leconMetier.cs: return success
+leconMetier.cs-->leconCtrl.js: return success
+leconCtrl.js-->leconVue.html: afficherConfirmation("Leçon enregistrée")
+leconVue.html-->Secrétaire: afficherMessageSucces()
+Secrétaire-->Eleve: Confirme le rendez-vous
+end
