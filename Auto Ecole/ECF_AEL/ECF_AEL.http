@@ -1,0 +1,6 @@
+@ECF_AEL_HostAddress = http://localhost:5130
+
+GET {{ECF_AEL_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

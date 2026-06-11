@@ -1,0 +1,18 @@
+# Claude Code
+.claude/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# ASP.NET Core build
+**/bin/
+**/obj/
+
+# Paramètres locaux (peuvent contenir des mots de passe)
+**/appsettings.Development.json
+
+# Node / React
+node_modules/
+dist/

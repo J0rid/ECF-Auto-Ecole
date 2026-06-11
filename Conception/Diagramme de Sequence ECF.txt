@@ -2,73 +2,85 @@ title Prise d'une leçon de conduite - AEL
 
 actor Eleve
 actor Secrétaire
-participant leconVue.html
-participant leconCtrl.js
-participant leconMetier.cs
-participant moniteurMetier.cs
-participant vehiculeMetier.cs
-participant leconRepo.cs
-participant moniteurRepo.cs
-participant vehiculeRepo.cs
+participant Lecons.jsx
+participant leconService.js
+participant CalendrierController.cs
+participant LeconController.cs
+participant LeconMetier.cs
+participant LeconRepository.cs
 database BDD
 
 Eleve -> Secrétaire: Demande un créneau
 
-Secrétaire->leconVue.html: Ouvrir la page de leçons
-leconVue.html->leconCtrl.js: getCreneauxDispo(date)
-leconCtrl.js->leconMetier.cs: fetchCreneaux(date)
-leconMetier.cs->leconRepo.cs: findCreneauxByDate(date)
-leconRepo.cs->BDD: SELECT * FROM CALENDRIER WHERE DateHeure  = @date
-BDD-->leconRepo.cs: return creneauxList
-leconRepo.cs-->leconMetier.cs: return creneauxList
-leconMetier.cs-->leconCtrl.js: return creneauxList
-leconCtrl.js-->leconVue.html: afficherCreneaux(creneauxList)
+Secrétaire -> Lecons.jsx: Ouvrir la page de leçons
 
-Secrétaire->leconVue.html: Selectionne un créneau
-leconVue.html->leconCtrl.js: checkDispo(dateHeure)
-leconCtrl.js->leconMetier.cs: verifDispo(dateHeure)
+note over Lecons.jsx,BDD: Chargement initial : créneaux, élèves, moniteurs, modèles de véhicules
+Lecons.jsx -> leconService.js: getCalendrier()
+leconService.js -> CalendrierController.cs: GET /api/Calendrier
+CalendrierController.cs -> BDD: SELECT DateHeure FROM Calendrier
+BDD --> CalendrierController.cs: creneauxList
+CalendrierController.cs --> leconService.js: 200 OK creneauxList
+leconService.js --> Lecons.jsx: creneauxList
 
-leconMetier.cs->moniteurMetier.cs: getMoniteursActifs()
-moniteurMetier.cs->moniteurRepo.cs: findMoniteursActifs()
-moniteurRepo.cs->BDD: SELECT * FROM MONITEUR WHERE activite = 1
-BDD-->moniteurRepo.cs: return moniteurList
-moniteurRepo.cs-->moniteurMetier.cs: return moniteurList
-moniteurMetier.cs-->leconMetier.cs: return moniteurList
+Lecons.jsx --> Secrétaire: Afficher le calendrier avec les jours disponibles
 
-leconMetier.cs->vehiculeMetier.cs: getVehiculesDispo()
-vehiculeMetier.cs->vehiculeRepo.cs: findVehiculesDispo()
-vehiculeRepo.cs->BDD: SELECT * FROM VEHICULE WHERE etat = 1
-BDD-->vehiculeRepo.cs: return vehiculeList
-vehiculeRepo.cs-->vehiculeMetier.cs: return vehiculeList
-vehiculeMetier.cs-->leconMetier.cs: return vehiculeList
+Secrétaire -> Lecons.jsx: Sélectionner un jour disponible dans le calendrier
+Lecons.jsx --> Secrétaire: Afficher les créneaux horaires du jour
 
-leconMetier.cs-->leconCtrl.js: return dispo(moniteurList, vehiculeList)
-leconCtrl.js-->leconVue.html: afficherDispo(moniteurList, vehiculeList)
+Secrétaire -> Lecons.jsx: Sélectionner un créneau horaire
+Lecons.jsx --> Secrétaire: Afficher le formulaire de réservation
 
-Secrétaire->leconVue.html: Saisi des infos (idEleve, idMoniteur, modeleVehicule, duree)
+Secrétaire -> Lecons.jsx: Saisir élève, moniteur, modèle de véhicule, durée
 
 loop [Champs invalides]
-leconVue.html->leconVue.html: validerFormulaire()
+Lecons.jsx -> Lecons.jsx: validerFormulaire()
 end
 
-leconVue.html->leconCtrl.js: submitLecon(idEleve, idMoniteur, modeleVehicule, dateHeure, duree)
-leconCtrl.js->leconMetier.cs: createLecon(idEleve, idMoniteur, modeleVehicule, dateHeure, duree)
+Lecons.jsx -> leconService.js: reserver(lecon)
+leconService.js -> LeconController.cs: POST /api/Lecon
 
-alt [Moniteur indisponible]
-leconMetier.cs-->leconCtrl.js: return moniteurError
-leconCtrl.js-->leconVue.html: afficheErreur("Moniteur indisponible")
-leconVue.html-->Secrétaire: afficherMessageErreur()
-else [Véhicule indisponible]
-leconMetier.cs-->leconCtrl.js: return vehiculeError
-leconCtrl.js-->leconVue.html: afficheErreur("Véhicule indisponible")
-leconVue.html-->Secrétaire: afficherMessageErreur()
-else [Données valides]
-leconMetier.cs->leconRepo.cs: saveLecon(idEleve, idMoniteur, modeleVehicule, dateHeure, duree)
-leconRepo.cs->BDD: INSERT INTO LECON (ModeleLecon, DateHLecon, EleveId, MoniteurId , Duree)
-BDD-->leconRepo.cs: return success
-leconRepo.cs-->leconMetier.cs: return success
-leconMetier.cs-->leconCtrl.js: return success
-leconCtrl.js-->leconVue.html: afficherConfirmation("Leçon enregistrée")
-leconVue.html-->Secrétaire: afficherMessageSucces()
-Secrétaire-->Eleve: Confirme le rendez-vous
+LeconController.cs -> LeconMetier.cs: Reserver(lecon)
+
+LeconMetier.cs -> LeconRepository.cs: CreneauExiste(dateHLecon)
+LeconRepository.cs -> BDD: SELECT COUNT(*) FROM Calendrier WHERE DateHeure = @DateH
+BDD --> LeconRepository.cs: count
+LeconRepository.cs --> LeconMetier.cs: bool
+
+LeconMetier.cs -> LeconRepository.cs: MoniteurEstActif(moniteurId)
+LeconRepository.cs -> BDD: SELECT COUNT(*) FROM Moniteur WHERE IdMoniteur = @Id AND Activite = 1
+BDD --> LeconRepository.cs: count
+LeconRepository.cs --> LeconMetier.cs: bool
+
+LeconMetier.cs -> LeconRepository.cs: MoniteurEstDisponible(moniteurId, dateHLecon)
+LeconRepository.cs -> BDD: SELECT COUNT(*) FROM Lecon WHERE MoniteurId = @Id AND DateHLecon = @DateH
+BDD --> LeconRepository.cs: count
+LeconRepository.cs --> LeconMetier.cs: bool
+
+LeconMetier.cs -> LeconRepository.cs: EleveEstDisponible(eleveId, dateHLecon)
+LeconRepository.cs -> BDD: SELECT COUNT(*) FROM Lecon WHERE EleveId = @Id AND DateHLecon = @DateH
+BDD --> LeconRepository.cs: count
+LeconRepository.cs --> LeconMetier.cs: bool
+
+LeconMetier.cs -> LeconRepository.cs: VehiculeEstDisponible(modeleLecon, dateHLecon)
+LeconRepository.cs -> BDD: SELECT COUNT(*) FROM Vehicule WHERE ModeleVehicule = @Modele AND Etat = 1
+BDD --> LeconRepository.cs: nbVehicules
+LeconRepository.cs -> BDD: SELECT COUNT(*) FROM Lecon WHERE ModeleLecon = @Modele AND DateHLecon = @DateH
+BDD --> LeconRepository.cs: nbLecons
+LeconRepository.cs --> LeconMetier.cs: nbLecons < nbVehicules
+
+alt [Une vérification échoue]
+LeconMetier.cs --> LeconController.cs: return ReservationResult.Fail(message)
+LeconController.cs --> leconService.js: 409 Conflict { message }
+leconService.js --> Lecons.jsx: erreur
+Lecons.jsx --> Secrétaire: Afficher le message d'erreur
+else [Toutes les vérifications sont OK]
+LeconMetier.cs -> LeconRepository.cs: CreateLecon(lecon)
+LeconRepository.cs -> BDD: INSERT INTO Lecon (ModeleLecon, DateHLecon, EleveId, MoniteurId, Duree)
+BDD --> LeconRepository.cs: success
+LeconRepository.cs --> LeconMetier.cs: void
+LeconMetier.cs --> LeconController.cs: return ReservationResult.Ok()
+LeconController.cs --> leconService.js: 201 Created
+leconService.js --> Lecons.jsx: succès
+Lecons.jsx --> Secrétaire: Afficher "Leçon réservée avec succès !"
+Secrétaire --> Eleve: Confirmer le rendez-vous
 end
