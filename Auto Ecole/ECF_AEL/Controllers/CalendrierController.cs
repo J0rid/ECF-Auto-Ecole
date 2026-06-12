@@ -18,29 +18,29 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_calendrierMetier.GetAll());
+        public IActionResult GetAllCreneaux() => Ok(_calendrierMetier.GetAllCreneaux());
 
         [HttpPost]
-        public IActionResult Create([FromBody] Calendrier calendrier)
+        public IActionResult CreateCreneau([FromBody] Calendrier calendrier)
         {
-            (bool Success, string? Erreur) resultat = _calendrierMetier.Create(calendrier.DateHeure);
+            (bool Success, string? Erreur) resultat = _calendrierMetier.CreateCreneau(calendrier.DateHeure);
             if (!resultat.Success) return Conflict(new { message = resultat.Erreur });
             return Created(string.Empty, calendrier);
         }
 
         [HttpPost("batch")]
-        public IActionResult CreateMany([FromBody] List<Calendrier> creneaux)
+        public IActionResult CreateManyCreneaux([FromBody] List<Calendrier> creneaux)
         {
             List<DateTime> dates = creneaux.Select(c => c.DateHeure).ToList();
-            (bool Success, string? Erreur) resultat = _calendrierMetier.CreateMany(dates);
+            (bool Success, string? Erreur) resultat = _calendrierMetier.CreateManyCreneaux(dates);
             if (!resultat.Success) return Conflict(new { message = resultat.Erreur });
             return Created(string.Empty, new { count = dates.Count });
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromQuery] DateTime dateHeure)
+        public IActionResult DeleteCreneau([FromQuery] DateTime dateHeure)
         {
-            (bool Success, string? Erreur) resultat = _calendrierMetier.Delete(dateHeure);
+            (bool Success, string? Erreur) resultat = _calendrierMetier.DeleteCreneau(dateHeure);
             if (!resultat.Success)
             {
                 if (resultat.Erreur!.Contains("n'existe pas")) return NotFound(new { message = resultat.Erreur });

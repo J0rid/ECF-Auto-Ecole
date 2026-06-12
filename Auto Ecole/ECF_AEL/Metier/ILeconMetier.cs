@@ -4,9 +4,9 @@ namespace ECF_AEL.Metier
 {
     public interface ILeconMetier
     {
-        List<LeconDetail> GetAll();
-        List<LeconDetail> GetByEleve(int eleveId);
-        ReservationResult Reserver(Lecon lecon);
-        bool Annuler(string modeleLecon, DateTime dateHLecon, int eleveId, int moniteurId);
+        List<LeconDetail> GetAllLecons();
+        List<LeconDetail> GetLeconsByEleve(int eleveId);
+        ReservationResult ReserverLecon(Lecon lecon);
+        bool AnnulerLecon(string modeleLecon, DateTime dateHLecon, int eleveId, int moniteurId);
     }
 }

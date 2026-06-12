@@ -32,14 +32,10 @@ Lecons.jsx --> Secrétaire: Afficher le formulaire de réservation
 
 Secrétaire -> Lecons.jsx: Saisir élève, moniteur, modèle de véhicule, durée
 
-loop [Champs invalides]
-Lecons.jsx -> Lecons.jsx: validerFormulaire()
-end
-
 Lecons.jsx -> leconService.js: reserver(lecon)
 leconService.js -> LeconController.cs: POST /api/Lecon
 
-LeconController.cs -> LeconMetier.cs: Reserver(lecon)
+LeconController.cs -> LeconMetier.cs: ReserverLecon(lecon)
 
 LeconMetier.cs -> LeconRepository.cs: CreneauExiste(dateHLecon)
 LeconRepository.cs -> BDD: SELECT COUNT(*) FROM Calendrier WHERE DateHeure = @DateH

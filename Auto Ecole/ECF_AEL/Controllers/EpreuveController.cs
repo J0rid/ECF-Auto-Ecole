@@ -18,15 +18,15 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_epreuveMetier.GetAll());
+        public IActionResult GetAllEpreuves() => Ok(_epreuveMetier.GetAllEpreuves());
 
         [HttpGet("eleve/{eleveId}")]
-        public IActionResult GetByEleve(int eleveId) => Ok(_epreuveMetier.GetByEleve(eleveId));
+        public IActionResult GetEpreuvesByEleve(int eleveId) => Ok(_epreuveMetier.GetEpreuvesByEleve(eleveId));
 
         [HttpPost]
-        public IActionResult Create([FromBody] Epreuve epreuve)
+        public IActionResult CreateEpreuve([FromBody] Epreuve epreuve)
         {
-            (bool Success, string? Erreur) resultat = _epreuveMetier.Create(epreuve);
+            (bool Success, string? Erreur) resultat = _epreuveMetier.CreateEpreuve(epreuve);
             if (!resultat.Success)
             {
                 if (resultat.Erreur!.Contains("introuvable")) return NotFound(new { message = resultat.Erreur });
@@ -36,9 +36,9 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteEpreuve(int id)
         {
-            if (!_epreuveMetier.Delete(id))
+            if (!_epreuveMetier.DeleteEpreuve(id))
                 return NotFound(new { message = $"Épreuve {id} introuvable." });
             return NoContent();
         }

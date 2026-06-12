@@ -150,7 +150,7 @@ export default function Moniteurs() {
                         <td>
                           <div className="d-flex align-items-center gap-2">
                             <div className="user-badge" style={{ width: 30, height: 30, fontSize: '0.65rem' }}>
-                              {m.nomMoniteur?.[0]}{m.prenomMoniteur?.[0]}
+                              {m.nomMoniteur ? m.nomMoniteur[0] : ''}{m.prenomMoniteur ? m.prenomMoniteur[0] : ''}
                             </div>
                             <span className="fw-semibold">{m.prenomMoniteur} {m.nomMoniteur}</span>
                           </div>

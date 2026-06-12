@@ -4,12 +4,12 @@ namespace ECF_AEL.Metier
 {
     public interface IMoniteurMetier
     {
-        List<Moniteur> GetAll();
-        Moniteur? GetById(int id);
-        void Create(Moniteur moniteur);
-        bool Update(Moniteur moniteur);
-        bool Activer(int id);
-        bool Desactiver(int id);
-        bool Delete(int id);
+        List<Moniteur> GetAllMoniteurs();
+        Moniteur? GetMoniteurById(int id);
+        void CreateMoniteur(Moniteur moniteur);
+        bool UpdateMoniteur(Moniteur moniteur);
+        bool ActiverMoniteur(int id);
+        bool DesactiverMoniteur(int id);
+        bool DeleteMoniteur(int id);
     }
 }

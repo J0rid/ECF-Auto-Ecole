@@ -18,36 +18,36 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_eleveMetier.GetAll());
+        public IActionResult GetAllEleves() => Ok(_eleveMetier.GetAllEleves());
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetEleveById(int id)
         {
-            Eleve? eleve = _eleveMetier.GetById(id);
+            Eleve? eleve = _eleveMetier.GetEleveById(id);
             if (eleve == null) return NotFound(new { message = $"Élève {id} introuvable." });
             return Ok(eleve);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Eleve eleve)
+        public IActionResult CreateEleve([FromBody] Eleve eleve)
         {
-            _eleveMetier.Create(eleve);
+            _eleveMetier.CreateEleve(eleve);
             return Created(string.Empty, eleve);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Eleve eleve)
+        public IActionResult UpdateEleve(int id, [FromBody] Eleve eleve)
         {
             eleve.IdEleve = id;
-            if (!_eleveMetier.Update(eleve))
+            if (!_eleveMetier.UpdateEleve(eleve))
                 return NotFound(new { message = $"Élève {id} introuvable." });
             return Ok(eleve);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteEleve(int id)
         {
-            if (!_eleveMetier.Delete(id))
+            if (!_eleveMetier.DeleteEleve(id))
                 return NotFound(new { message = $"Élève {id} introuvable." });
             return NoContent();
         }

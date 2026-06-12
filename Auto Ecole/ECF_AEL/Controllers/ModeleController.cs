@@ -18,19 +18,19 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_modeleMetier.GetAll());
+        public IActionResult GetAllModeles() => Ok(_modeleMetier.GetAllModeles());
 
         [HttpPost]
-        public IActionResult Create([FromBody] Modele modele)
+        public IActionResult CreateModele([FromBody] Modele modele)
         {
-            _modeleMetier.Create(modele);
+            _modeleMetier.CreateModele(modele);
             return Created(string.Empty, modele);
         }
 
         [HttpDelete("{modeleVehicule}")]
-        public IActionResult Delete(string modeleVehicule)
+        public IActionResult DeleteModele(string modeleVehicule)
         {
-            if (!_modeleMetier.Delete(modeleVehicule))
+            if (!_modeleMetier.DeleteModele(modeleVehicule))
                 return NotFound(new { message = $"Modèle '{modeleVehicule}' introuvable." });
             return NoContent();
         }

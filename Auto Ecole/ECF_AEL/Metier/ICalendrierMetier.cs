@@ -4,9 +4,9 @@ namespace ECF_AEL.Metier
 {
     public interface ICalendrierMetier
     {
-        List<Calendrier> GetAll();
-        (bool Success, string? Erreur) Create(DateTime dateHeure);
-        (bool Success, string? Erreur) CreateMany(List<DateTime> dates);
-        (bool Success, string? Erreur) Delete(DateTime dateHeure);
+        List<Calendrier> GetAllCreneaux();
+        (bool Success, string? Erreur) CreateCreneau(DateTime dateHeure);
+        (bool Success, string? Erreur) CreateManyCreneaux(List<DateTime> dates);
+        (bool Success, string? Erreur) DeleteCreneau(DateTime dateHeure);
     }
 }

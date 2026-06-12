@@ -4,9 +4,9 @@ namespace ECF_AEL.Metier
 {
     public interface IEpreuveMetier
     {
-        List<EpreuveDetail> GetAll();
-        List<EpreuveDetail> GetByEleve(int eleveId);
-        (bool Success, string? Erreur) Create(Epreuve epreuve);
-        bool Delete(int id);
+        List<EpreuveDetail> GetAllEpreuves();
+        List<EpreuveDetail> GetEpreuvesByEleve(int eleveId);
+        (bool Success, string? Erreur) CreateEpreuve(Epreuve epreuve);
+        bool DeleteEpreuve(int id);
     }
 }

@@ -12,9 +12,9 @@ namespace ECF_AEL.Metier
             _calendrierRepository = calendrierRepository;
         }
 
-        public List<Calendrier> GetAll() => _calendrierRepository.GetAllCreneaux();
+        public List<Calendrier> GetAllCreneaux() => _calendrierRepository.GetAllCreneaux();
 
-        public (bool Success, string? Erreur) Create(DateTime dateHeure)
+        public (bool Success, string? Erreur) CreateCreneau(DateTime dateHeure)
         {
             if (_calendrierRepository.CreneauExiste(dateHeure))
                 return (false, "Ce créneau existe déjà dans le calendrier.");
@@ -23,7 +23,7 @@ namespace ECF_AEL.Metier
             return (true, null);
         }
 
-        public (bool Success, string? Erreur) CreateMany(List<DateTime> dates)
+        public (bool Success, string? Erreur) CreateManyCreneaux(List<DateTime> dates)
         {
             List<DateTime> doublons = dates.Where(d => _calendrierRepository.CreneauExiste(d)).ToList();
             if (doublons.Count > 0)
@@ -38,7 +38,7 @@ namespace ECF_AEL.Metier
             return (true, null);
         }
 
-        public (bool Success, string? Erreur) Delete(DateTime dateHeure)
+        public (bool Success, string? Erreur) DeleteCreneau(DateTime dateHeure)
         {
             if (!_calendrierRepository.CreneauExiste(dateHeure))
                 return (false, "Ce créneau n'existe pas.");

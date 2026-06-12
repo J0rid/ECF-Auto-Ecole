@@ -18,52 +18,52 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_vehiculeMetier.GetAll());
+        public IActionResult GetAllVehicules() => Ok(_vehiculeMetier.GetAllVehicules());
 
         [HttpGet("{noImmat}")]
-        public IActionResult GetByImmat(string noImmat)
+        public IActionResult GetVehiculeByImmat(string noImmat)
         {
-            VehiculeDetail? vehicule = _vehiculeMetier.GetByImmat(noImmat);
+            VehiculeDetail? vehicule = _vehiculeMetier.GetVehiculeByImmat(noImmat);
             if (vehicule == null) return NotFound(new { message = $"Véhicule '{noImmat}' introuvable." });
             return Ok(vehicule);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Vehicule vehicule)
+        public IActionResult CreateVehicule([FromBody] Vehicule vehicule)
         {
-            _vehiculeMetier.Create(vehicule);
+            _vehiculeMetier.CreateVehicule(vehicule);
             return Created(string.Empty, vehicule);
         }
 
         [HttpPut("{noImmat}")]
-        public IActionResult Update(string noImmat, [FromBody] Vehicule vehicule)
+        public IActionResult UpdateVehicule(string noImmat, [FromBody] Vehicule vehicule)
         {
             vehicule.NoImmat = noImmat;
-            if (!_vehiculeMetier.Update(vehicule))
+            if (!_vehiculeMetier.UpdateVehicule(vehicule))
                 return NotFound(new { message = $"Véhicule '{noImmat}' introuvable." });
             return Ok(vehicule);
         }
 
         [HttpPatch("{noImmat}/activer")]
-        public IActionResult Activer(string noImmat)
+        public IActionResult ActiverVehicule(string noImmat)
         {
-            if (!_vehiculeMetier.Activer(noImmat))
+            if (!_vehiculeMetier.ActiverVehicule(noImmat))
                 return NotFound(new { message = $"Véhicule '{noImmat}' introuvable." });
             return Ok(new { message = "Véhicule activé." });
         }
 
         [HttpPatch("{noImmat}/desactiver")]
-        public IActionResult Desactiver(string noImmat)
+        public IActionResult DesactiverVehicule(string noImmat)
         {
-            if (!_vehiculeMetier.Desactiver(noImmat))
+            if (!_vehiculeMetier.DesactiverVehicule(noImmat))
                 return NotFound(new { message = $"Véhicule '{noImmat}' introuvable." });
             return Ok(new { message = "Véhicule désactivé." });
         }
 
         [HttpDelete("{noImmat}")]
-        public IActionResult Delete(string noImmat)
+        public IActionResult DeleteVehicule(string noImmat)
         {
-            if (!_vehiculeMetier.Delete(noImmat))
+            if (!_vehiculeMetier.DeleteVehicule(noImmat))
                 return NotFound(new { message = $"Véhicule '{noImmat}' introuvable." });
             return NoContent();
         }

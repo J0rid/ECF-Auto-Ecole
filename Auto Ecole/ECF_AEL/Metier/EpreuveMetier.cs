@@ -16,11 +16,11 @@ namespace ECF_AEL.Metier
             _eleveRepository = eleveRepository;
         }
 
-        public List<EpreuveDetail> GetAll() => _epreuveRepository.GetAllEpreuves();
+        public List<EpreuveDetail> GetAllEpreuves() => _epreuveRepository.GetAllEpreuves();
 
-        public List<EpreuveDetail> GetByEleve(int eleveId) => _epreuveRepository.GetEpreuvesByEleve(eleveId);
+        public List<EpreuveDetail> GetEpreuvesByEleve(int eleveId) => _epreuveRepository.GetEpreuvesByEleve(eleveId);
 
-        public (bool Success, string? Erreur) Create(Epreuve epreuve)
+        public (bool Success, string? Erreur) CreateEpreuve(Epreuve epreuve)
         {
             if (!TypesValides.Contains(epreuve.TypeEpreuve))
                 return (false, "TypeEpreuve doit être 'Code' ou 'Conduite'.");
@@ -41,6 +41,6 @@ namespace ECF_AEL.Metier
             return (true, null);
         }
 
-        public bool Delete(int id) => _epreuveRepository.DeleteEpreuve(id);
+        public bool DeleteEpreuve(int id) => _epreuveRepository.DeleteEpreuve(id);
     }
 }

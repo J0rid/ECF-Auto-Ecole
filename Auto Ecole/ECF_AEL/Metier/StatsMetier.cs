@@ -19,8 +19,12 @@ namespace ECF_AEL.Metier
 
             StatsTauxReussite stats = new StatsTauxReussite { Annee = annee };
 
-            foreach ((string type, int total, int reussites) in lignes)
+            for (int i = 0; i < lignes.Count; i++)
             {
+                string type = lignes[i].Type;
+                int total = lignes[i].Total;
+                int reussites = lignes[i].Reussites;
+
                 StatsTypeEpreuve stat = new StatsTypeEpreuve
                 {
                     Total = total,

@@ -18,24 +18,24 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_leconMetier.GetAll());
+        public IActionResult GetAllLecons() => Ok(_leconMetier.GetAllLecons());
 
         [HttpGet("eleve/{eleveId}")]
-        public IActionResult GetByEleve(int eleveId) => Ok(_leconMetier.GetByEleve(eleveId));
+        public IActionResult GetLeconsByEleve(int eleveId) => Ok(_leconMetier.GetLeconsByEleve(eleveId));
 
         [HttpPost]
-        public IActionResult Reserver([FromBody] Lecon lecon)
+        public IActionResult ReserverLecon([FromBody] Lecon lecon)
         {
-            ReservationResult result = _leconMetier.Reserver(lecon);
+            ReservationResult result = _leconMetier.ReserverLecon(lecon);
             if (!result.Success)
                 return Conflict(new { message = result.Erreur });
             return Created(string.Empty, lecon);
         }
 
         [HttpDelete]
-        public IActionResult Annuler([FromBody] Lecon lecon)
+        public IActionResult AnnulerLecon([FromBody] Lecon lecon)
         {
-            bool annule = _leconMetier.Annuler(lecon.ModeleLecon, lecon.DateHLecon, lecon.EleveId, lecon.MoniteurId);
+            bool annule = _leconMetier.AnnulerLecon(lecon.ModeleLecon, lecon.DateHLecon, lecon.EleveId, lecon.MoniteurId);
             if (!annule)
                 return NotFound(new { message = "Leçon introuvable." });
             return NoContent();

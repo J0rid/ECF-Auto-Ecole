@@ -131,7 +131,7 @@ export default function Eleves() {
                     <td>
                       <div className="d-flex align-items-center gap-2">
                         <div className="user-badge" style={{ width: 30, height: 30, fontSize: '0.65rem' }}>
-                          {e.nomEleve?.[0]}{e.prenomEleve?.[0]}
+                          {e.nomEleve ? e.nomEleve[0] : ''}{e.prenomEleve ? e.prenomEleve[0] : ''}
                         </div>
                         <span className="fw-semibold">{e.prenomEleve} {e.nomEleve}</span>
                       </div>

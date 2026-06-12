@@ -12,11 +12,11 @@ namespace ECF_AEL.Metier
             _eleveRepository = eleveRepository;
         }
 
-        public List<Eleve> GetAll() => _eleveRepository.GetAllEleves();
+        public List<Eleve> GetAllEleves() => _eleveRepository.GetAllEleves();
 
-        public Eleve? GetById(int id) => _eleveRepository.GetEleveById(id);
+        public Eleve? GetEleveById(int id) => _eleveRepository.GetEleveById(id);
 
-        public void Create(Eleve eleve)
+        public void CreateEleve(Eleve eleve)
         {
             eleve.Code = false;
             eleve.Conduite = false;
@@ -24,14 +24,14 @@ namespace ECF_AEL.Metier
             _eleveRepository.CreateEleve(eleve);
         }
 
-        public bool Update(Eleve eleve)
+        public bool UpdateEleve(Eleve eleve)
         {
             if (_eleveRepository.GetEleveById(eleve.IdEleve) == null) return false;
             _eleveRepository.UpdateEleve(eleve);
             return true;
         }
 
-        public bool Delete(int id)
+        public bool DeleteEleve(int id)
         {
             if (_eleveRepository.GetEleveById(id) == null) return false;
             _eleveRepository.DeleteEleve(id);

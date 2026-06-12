@@ -12,11 +12,11 @@ namespace ECF_AEL.Metier
             _leconRepository = leconRepository;
         }
 
-        public List<LeconDetail> GetAll() => _leconRepository.GetAllLecons();
+        public List<LeconDetail> GetAllLecons() => _leconRepository.GetAllLecons();
 
-        public List<LeconDetail> GetByEleve(int eleveId) => _leconRepository.GetLeconsByEleve(eleveId);
+        public List<LeconDetail> GetLeconsByEleve(int eleveId) => _leconRepository.GetLeconsByEleve(eleveId);
 
-        public ReservationResult Reserver(Lecon lecon)
+        public ReservationResult ReserverLecon(Lecon lecon)
         {
             if (!_leconRepository.CreneauExiste(lecon.DateHLecon))
                 return ReservationResult.Fail("Ce créneau n'existe pas dans le calendrier.");
@@ -37,7 +37,7 @@ namespace ECF_AEL.Metier
             return ReservationResult.Ok();
         }
 
-        public bool Annuler(string modeleLecon, DateTime dateHLecon, int eleveId, int moniteurId)
+        public bool AnnulerLecon(string modeleLecon, DateTime dateHLecon, int eleveId, int moniteurId)
             => _leconRepository.DeleteLecon(modeleLecon, dateHLecon, eleveId, moniteurId);
     }
 }

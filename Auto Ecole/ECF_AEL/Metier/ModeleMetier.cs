@@ -12,11 +12,11 @@ namespace ECF_AEL.Metier
             _modeleRepository = modeleRepository;
         }
 
-        public List<Modele> GetAll() => _modeleRepository.GetAllModeles();
+        public List<Modele> GetAllModeles() => _modeleRepository.GetAllModeles();
 
-        public void Create(Modele modele) => _modeleRepository.CreateModele(modele);
+        public void CreateModele(Modele modele) => _modeleRepository.CreateModele(modele);
 
-        public bool Delete(string modeleVehicule)
+        public bool DeleteModele(string modeleVehicule)
         {
             if (_modeleRepository.GetModeleByNom(modeleVehicule) == null) return false;
             _modeleRepository.DeleteModele(modeleVehicule);

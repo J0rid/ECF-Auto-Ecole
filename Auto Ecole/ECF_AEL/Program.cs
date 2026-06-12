@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
@@ -17,7 +17,7 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod());
 });
 
-var jwtKey = builder.Configuration["Jwt:Key"]!;
+string jwtKey = builder.Configuration["Jwt:Key"]!;
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -55,7 +55,7 @@ builder.Services.AddScoped<IEpreuveMetier, EpreuveMetier>();
 builder.Services.AddScoped<IStatsRepository, StatsRepository>();
 builder.Services.AddScoped<IStatsMetier, StatsMetier>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseCors("AllowFrontend");
 app.UseAuthentication();

@@ -18,52 +18,52 @@ namespace ECF_AEL.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_moniteurMetier.GetAll());
+        public IActionResult GetAllMoniteurs() => Ok(_moniteurMetier.GetAllMoniteurs());
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetMoniteurById(int id)
         {
-            Moniteur? moniteur = _moniteurMetier.GetById(id);
+            Moniteur? moniteur = _moniteurMetier.GetMoniteurById(id);
             if (moniteur == null) return NotFound(new { message = $"Moniteur {id} introuvable." });
             return Ok(moniteur);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Moniteur moniteur)
+        public IActionResult CreateMoniteur([FromBody] Moniteur moniteur)
         {
-            _moniteurMetier.Create(moniteur);
+            _moniteurMetier.CreateMoniteur(moniteur);
             return Created(string.Empty, moniteur);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Moniteur moniteur)
+        public IActionResult UpdateMoniteur(int id, [FromBody] Moniteur moniteur)
         {
             moniteur.IdMoniteur = id;
-            if (!_moniteurMetier.Update(moniteur))
+            if (!_moniteurMetier.UpdateMoniteur(moniteur))
                 return NotFound(new { message = $"Moniteur {id} introuvable." });
             return Ok(moniteur);
         }
 
         [HttpPatch("{id}/activer")]
-        public IActionResult Activer(int id)
+        public IActionResult ActiverMoniteur(int id)
         {
-            if (!_moniteurMetier.Activer(id))
+            if (!_moniteurMetier.ActiverMoniteur(id))
                 return NotFound(new { message = $"Moniteur {id} introuvable." });
             return Ok(new { message = "Moniteur activé." });
         }
 
         [HttpPatch("{id}/desactiver")]
-        public IActionResult Desactiver(int id)
+        public IActionResult DesactiverMoniteur(int id)
         {
-            if (!_moniteurMetier.Desactiver(id))
+            if (!_moniteurMetier.DesactiverMoniteur(id))
                 return NotFound(new { message = $"Moniteur {id} introuvable." });
             return Ok(new { message = "Moniteur désactivé." });
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteMoniteur(int id)
         {
-            if (!_moniteurMetier.Delete(id))
+            if (!_moniteurMetier.DeleteMoniteur(id))
                 return NotFound(new { message = $"Moniteur {id} introuvable." });
             return NoContent();
         }

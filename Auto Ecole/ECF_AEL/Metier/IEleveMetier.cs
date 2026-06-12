@@ -4,10 +4,10 @@ namespace ECF_AEL.Metier
 {
     public interface IEleveMetier
     {
-        List<Eleve> GetAll();
-        Eleve? GetById(int id);
-        void Create(Eleve eleve);
-        bool Update(Eleve eleve);
-        bool Delete(int id);
+        List<Eleve> GetAllEleves();
+        Eleve? GetEleveById(int id);
+        void CreateEleve(Eleve eleve);
+        bool UpdateEleve(Eleve eleve);
+        bool DeleteEleve(int id);
     }
 }
